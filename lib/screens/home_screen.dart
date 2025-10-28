@@ -7,6 +7,7 @@ import '../widgets/app_drawer.dart';
 import '../widgets/tag_chip.dart';
 import '../widgets/training_card.dart';
 import '../widgets/word_card.dart';
+import '../widgets/word_audio_button.dart';
 import '../widgets/word_image.dart';
 import 'add_word_screen.dart';
 import 'statistics_screen.dart';
@@ -261,6 +262,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                    ),
+                    WordAudioButton(
+                      entry: entry,
+                      iconColor: theme.colorScheme.primary,
+                      iconSize: 28,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                     ),
                     IconButton(
                       onPressed: () => Navigator.of(context).pop(),

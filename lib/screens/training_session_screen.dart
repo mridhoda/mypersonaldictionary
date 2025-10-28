@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../models/training_activity.dart';
 import '../models/word_entry.dart';
 import '../state/dictionary_controller.dart';
+import '../widgets/word_audio_button.dart';
+import '../widgets/word_image.dart';
 
 class TrainingSessionScreen extends StatefulWidget {
   const TrainingSessionScreen({super.key});
@@ -449,16 +451,40 @@ class _QuestionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          if (question.entry.imagePath != null &&
+              question.entry.imagePath!.isNotEmpty) ...<Widget>[
+            WordImage(
+              imagePath: question.entry.imagePath,
+              height: 140,
+              width: double.infinity,
+              borderRadius: 18,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(height: 16),
+          ],
           Text(
             prompt.label,
             style: theme.textTheme.labelLarge?.copyWith(color: Colors.white60),
           ),
           const SizedBox(height: 8),
-          Text(
-            prompt.value,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  prompt.value,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              WordAudioButton(
+                entry: question.entry,
+                iconColor: theme.colorScheme.primary,
+                iconSize: 26,
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+              ),
+            ],
           ),
           const SizedBox(height: 18),
           if (question.options != null)

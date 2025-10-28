@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/word_entry.dart';
 import 'tag_chip.dart';
+import 'word_audio_button.dart';
 import 'word_image.dart';
 
 class WordCard extends StatelessWidget {
@@ -56,6 +57,12 @@ class WordCard extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
+                          ),
+                          WordAudioButton(
+                            entry: entry,
+                            iconColor: theme.colorScheme.primary,
+                            iconSize: 24,
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
                           ),
                           IconButton(
                             onPressed: onToggleLearned,

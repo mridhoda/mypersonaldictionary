@@ -9,6 +9,7 @@ import 'screens/settings_screen.dart';
 import 'screens/statistics_screen.dart';
 import 'screens/training_overview_screen.dart';
 import 'screens/training_session_screen.dart';
+import 'services/speech_service.dart';
 import 'state/dictionary_controller.dart';
 import 'theme/app_theme.dart';
 
@@ -19,34 +20,37 @@ Future<void> main() async {
   final repository = DictionaryRepository(preferences);
   final controller = DictionaryController(repository);
   await controller.initialize();
+  final speechService = SpeechService();
 
-  runApp(MyDictionaryApp(controller: controller));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DictionaryController>.value(value: controller),
+        Provider<SpeechService>.value(value: speechService),
+      ],
+      child: const MyDictionaryApp(),
+    ),
+  );
 }
 
 class MyDictionaryApp extends StatelessWidget {
-  const MyDictionaryApp({super.key, required this.controller});
-
-  final DictionaryController controller;
+  const MyDictionaryApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DictionaryController>.value(
-      value: controller,
-      child: MaterialApp(
-        title: 'My Personal Dictionary',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.buildDarkTheme(),
-        routes: <String, WidgetBuilder>{
-          HomeScreen.routeName: (_) => const HomeScreen(),
-          AddWordScreen.routeName: (_) => const AddWordScreen(),
-          StatisticsScreen.routeName: (_) => const StatisticsScreen(),
-          TrainingOverviewScreen.routeName: (_) =>
-              const TrainingOverviewScreen(),
-          TrainingSessionScreen.routeName: (_) => const TrainingSessionScreen(),
-          SettingsScreen.routeName: (_) => const SettingsScreen(),
-        },
-        initialRoute: HomeScreen.routeName,
-      ),
+    return MaterialApp(
+      title: 'My Personal Dictionary',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.buildDarkTheme(),
+      routes: <String, WidgetBuilder>{
+        HomeScreen.routeName: (_) => const HomeScreen(),
+        AddWordScreen.routeName: (_) => const AddWordScreen(),
+        StatisticsScreen.routeName: (_) => const StatisticsScreen(),
+        TrainingOverviewScreen.routeName: (_) => const TrainingOverviewScreen(),
+        TrainingSessionScreen.routeName: (_) => const TrainingSessionScreen(),
+        SettingsScreen.routeName: (_) => const SettingsScreen(),
+      },
+      initialRoute: HomeScreen.routeName,
     );
   }
 }
